@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas</title>
+    <style>
+        body{margin:0;background-color: #333;text-align:center}
+        canvas{
+            background-color: green;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+      <script>
+	  
+/*
+* Labirinto
+* https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial 
+*/
+
+// VARIABILI  ====================================================================================================
+var cols, rows; // colonne e righe
+var w = 40; // larghezza e altezza delle colonne
+let grid = []; // array monodimensionale
+let stack = []; // array monodimensionale
+var current; // cellula di partenza da verificare
+
+
+// CANVAS ====================================================================================================
+var canvas = document.querySelector("canvas");
+canvas.width = 400;
+canvas.height = 400;
+var cell = canvas.getContext("2d");
+
+
+// BACKGROUND ====================================================================================================
+var background = canvas.getContext("2d");
+background.fillStyle = "gray";
+background.fillRect(0, 0, canvas.width, canvas.height);
+
+
+
+// INIT ====================================================================================================
+function init() {
+  
+  cols = canvas.width / w;  // ottiene numero colonne
+  rows = canvas.height / w; // ottiene numero righe
+  
+  // inizializza l'intera griglia. 
+     for ( var j=0; j<rows; j++ ) {
+    
+       for ( var i=0; i<cols; i++ ) {
+
+        grid.push(new Cell(i, j)); // ogni cella della griglia è inizializzata con un oggetto Cella
+      }
+    }
+
+    current = grid[0]; // cella di partenza 
+    current.visited = true; // la cella di partenza la settiamo come visitata
+    stack.push(current); // nell' array stack memorizziamo l'ultima cella visitata
+    current.highlight(); // disegniamo la prima cella
+  }
+
+
+// FUNZIONI ====================================================================================================
+
+// range di numeri interi casuali
+function randomRangeInt(min, max) { return Math.floor(Math.random() * (max - min) + min); }
+
+
+function index(i, j) {
+  if ( i<0 || j<0 || i > cols-1 || j > rows-1 ) { return -1; }
+ return i + j * cols;
+}
+
+
+function run() {
+
+  var next = current.checkNeighbors(); // next è la prossima cella da verificare
+
+  if (next) { // se next non è indefinita
+
+    next.visited = true; 
+    stack.push(next);
+    removeWall(current, next);
+    current.draw();
+    next.highlight();
+    current = next;
+  } else if (stack.length > 0) {
+    current.draw();
+    current = stack.pop();
+    current.highlight();
+  } else { console.log('FINE'); }
+}
+
+
+function removeWall(current, next) {
+
+  var xx = current.i - next.i;
+  var yy = current.j - next.j;
+
+  if (xx === 1) {
+    current.wall[3] = false;
+    next.wall[1] = false;
+  } else if (xx === -1) {
+    current.wall[1] = false; // right
+    next.wall[3] = false;    // left
+  }
+  
+  if (yy === 1) {
+    current.wall[0] = false;
+    next.wall[2] = false;
+  } else if (yy === -1) {
+    current.wall[2] = false;
+    next.wall[0] = false;
+  }
+
+}
+
+
+// CELL ====================================================================================================
+function Cell(i, j) {
+
+  this.i = i;
+  this.j = j;
+  this.x = i * w;
+  this.y = j * w;
+  this.wall = ['true', 'true', 'true', 'true'];
+  this.visited = false;
+
+
+  this.checkNeighbors = () => {
+
+    var neighbors = [];
+
+    var top =   grid[index(i, j-1)];
+    var right = grid[index(i+1, j)];
+    var bot =   grid[index(i, j+1)];
+    var left =  grid[index(i-1, j)];
+
+    if ( top && !top.visited) { neighbors.push(top); }        // se la cella di SOPRA    non sconfina e non è stata visitata = inseriamo la cella nell'array
+    if ( right && !right.visited) { neighbors.push(right); }  // se la cella di DESTRA   non sconfina e non è stata visitata = inseriamo la cella nell'array
+    if ( bot && !bot.visited) { neighbors.push(bot); }        // se la cella di SOTTO    non sconfina e non è stata visitata = inseriamo la cella nell'array
+    if ( left && !left.visited) { neighbors.push(left); }     // se la cella di SINISTRA non sconfina e non è stata visitata = inseriamo la cella nell'array
+
+    if ( neighbors.length > 0 ) { // se abbiamo trovato almeno una cella vicina da visitare
+
+      var r = randomRangeInt(0, neighbors.length); 
+      return neighbors[r];
+    } else {
+      return undefined;
+    }
+  }
+
+
+  this.highlight = () => { // la testa della cellula - la prossima cella da visitare
+  
+    cell.fillStyle = "red";
+    cell.fillRect(this.x, this.y, w, w);
+  }
+
+  this.draw = () => {   
+  
+    if ( !this.visited ) {
+
+      cell.fillStyle = "#666";
+      cell.fillRect(this.x, this.y, w, w);
+    } else {
+
+      cell.fillStyle = "#999";
+      cell.fillRect(this.x, this.y, w, w);
+     
+      cell.beginPath();
+      cell.strokeStyle = 'blue';
+      if ( this.wall[0] ) { cell.moveTo(this.x+w, this.y);  cell.lineTo(this.x, this.y); }// top
+      if ( this.wall[1] ) { cell.moveTo(this.x+w, this.y+w); cell.lineTo(this.x+w, this.y); } // right
+      if ( this.wall[2] ) { cell.moveTo(this.x, this.y+w); cell.lineTo(this.x+w, this.y+w); } // bottom
+      if ( this.wall[3] ) { cell.moveTo(this.x, this.y); cell.lineTo(this.x, this.y+w); } // left
+      cell.stroke();
+  }
+  }
+
+} // chiude Classe Cell
+
+// START  ====================================================================================================
+init(); 
+setInterval(function(){ run(); }, 100);
+
+
+	  
+	  
+	  
+	  </script>
+</body>
+</html>

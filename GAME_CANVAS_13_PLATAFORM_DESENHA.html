@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="screen" width="480" height="320"></canvas>
+<script>
+// Create a rectangle with an (x, y) coordinate, a width, and a height
+function rect(x, y, w, h) {
+  return { x: x, y: y, w: w, h: h }
+}
+
+// Represent the level as a list of rectangles
+var rects = [
+  rect(0, 0, 400, 20),
+  rect(0, 0, 20, 300),
+  rect(0, 280, 400, 20),
+  rect(380, 0, 20, 300),
+  rect(0, 100, 100, 20),
+  rect(100, 120, 20, 20),
+  rect(120, 140, 20, 20),
+  rect(140, 160, 20, 20),
+  rect(160, 180, 20, 20),
+  rect(180, 200, 20, 20),
+  rect(200, 220, 100, 20)
+]
+
+// Renders a frame
+function draw() {
+  var c = document.getElementById('screen').getContext('2d')
+
+  // Draw background
+  c.fillStyle = '#EEE'
+  c.fillRect(0, 0, c.canvas.width, c.canvas.height)
+
+  // Draw levels
+  c.fillStyle = '#BBB'
+  for (var i = 0; i < rects.length; i++) {
+    var r = rects[i]
+    c.fillRect(r.x, r.y, r.w, r.h)
+  }
+}
+
+// Set up the game loop
+window.onload = function() {
+  setInterval(function() {
+    draw()
+  }, 1000 / 60)
+}
+</script>
