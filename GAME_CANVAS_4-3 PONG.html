@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<canvas id="myCanvas" width="480" height="320"></canvas>
+<canvas id="myCanvas" width="400" height="400"></canvas>
 
 <script>
 var canvas = document.getElementById("myCanvas");
@@ -60,11 +60,11 @@ function draw() {
     
 	//Desenha quadra
     ctx.fillStyle = '#BBB'
-    ctx.fillRect(10, 10, 460, 10)	
-	ctx.fillRect(10, 300, 460, 10)	
-	ctx.fillRect(10, 10, 10, 300)	
-	ctx.fillRect(460, 10, 10, 300)
-	ctx.fillRect(230, 10, 10, 300)
+    ctx.fillRect(10, 10, 380, 10)	
+	ctx.fillRect(10, 380, 380, 10)	
+	ctx.fillRect(10, 10, 10, 380)	
+	ctx.fillRect(380, 10, 10, 380)
+	ctx.fillRect(190, 10, 10, 380)
 	
     if(downPressed) {
         paddleY += 7;
@@ -85,6 +85,6 @@ function draw() {
 
 setInterval(draw, 10);
 </script>
-
+<img src="UPDOWN.png" style="display: block;margin-left: auto;margin-right: auto; ">
 </body>
 </html>

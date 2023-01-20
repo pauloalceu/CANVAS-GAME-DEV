@@ -9,11 +9,7 @@
     </style>
 </head>
 <body>
-<div id="controls">
-    <button id="automaton" onclick="forward()">Step Forward</button>
-    <button id="back" onclick="forward(false)">Step Back</button>
-    <button id="reset" onclick="init()">Reset</button>
-</div>
+
 <canvas id="screen" width="480" height="320"></canvas>
 <script>
 
@@ -120,8 +116,14 @@ function generateWhiteNoise(size, whiteLevel = .6) {
 
   init();
 </script>
-<script>
-  
-</script>
+<center>
+<div id="controls">
+    <button id="automaton" onclick="forward()">Step Forward</button>
+    <button id="back" onclick="forward(false)">Step Back</button>
+    <button id="reset" onclick="init()">Reset</button>
+</div>
+</center>
+
+<img src="NENHUM.png" style="display: block;margin-left: auto;margin-right: auto; ">
 </body>
 </html>

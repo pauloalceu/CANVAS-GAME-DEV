@@ -19,11 +19,14 @@ var x = canvas.width/2;
 var y = canvas.height-30;
 var dx = 2;
 var dy = -2;
+var anday=70;
+var posytiro = 0;
 var paddleHeight = 10;
 var paddleWidth = 40;
 var paddleY = 100;
 var upPressed = false;
 var downPressed = false;
+var wPressed = false;
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -38,6 +41,13 @@ function keyDownHandler(e) {
 }
 
 function keyUpHandler(e) {
+
+ 
+	if(e.key == "w" && wPressed == false){
+	  posytiro = paddleY;
+	  wPressed = true;
+	}
+ 
     if(e.key == "Up" || e.key == "ArrowUp") {
         upPressed = false;
     }
@@ -45,6 +55,15 @@ function keyUpHandler(e) {
         downPressed = false;
     }
 }
+
+
+	function drawBall() {
+		ctx.beginPath();
+		ctx.arc(anday, posytiro, 10, 0, Math.PI*2);
+		ctx.fillStyle = "#0095DD";
+		ctx.fill();
+		ctx.closePath();
+	}
 
 function drawPaddle() {
     ctx.beginPath();
@@ -58,6 +77,19 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPaddle();
     
+	
+	
+	
+	
+	if(wPressed) {
+	    
+		drawBall();
+		anday+= 2;
+		if (anday>400){
+		  anday = 70;
+		  wPressed = false;
+		}
+	}
     if(downPressed) {
         paddleY += 7;
         if (paddleY + paddleHeight > canvas.height){
@@ -77,6 +109,6 @@ function draw() {
 
 setInterval(draw, 10);
 </script>
-<img src="UPDOWN.png" style="display: block;margin-left: auto;margin-right: auto; ">
+<img src="UPDOWN_W.png" style="display: block;margin-left: auto;margin-right: auto; ">
 </body>
 </html>

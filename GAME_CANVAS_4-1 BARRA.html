@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<canvas id="myCanvas" width="480" height="320"></canvas>
+<canvas id="myCanvas" width="480" height="400"></canvas>
 
 <script>
 var canvas = document.getElementById("myCanvas");
@@ -49,7 +49,7 @@ function keyUpHandler(e) {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "#FF0000";
     ctx.fill();
     ctx.closePath();
 }
@@ -77,6 +77,6 @@ function draw() {
 
 setInterval(draw, 10);
 </script>
-
+<img src="LEFTRIGHT.png" style="display: block;margin-left: auto;margin-right: auto; ">
 </body>
 </html>
