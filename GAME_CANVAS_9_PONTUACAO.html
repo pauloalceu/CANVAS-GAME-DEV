@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<canvas id="myCanvas" width="480" height="320"></canvas>
+<canvas id="myCanvas" width="480" height="400"></canvas>
 
 <script>
 var canvas = document.getElementById("myCanvas");
@@ -92,7 +92,7 @@ function drawBall() {
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = "#0095DD";
+  ctx.fillStyle = "#ff0000";
   ctx.fill();
   ctx.closePath();
 }
@@ -106,7 +106,7 @@ function drawBricks() {
         bricks[c][r].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#00ff00";
         ctx.fill();
         ctx.closePath();
       }
